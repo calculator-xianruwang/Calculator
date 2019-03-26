@@ -1,6 +1,9 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -23,13 +26,16 @@ public class Calculator extends JFrame implements ActionListener {
 
 	//计算器上的键的显示名字
     private final String[] KEYS = {
-            "7", "8", "9", "÷", "sin","π","剩余体锻数量",//6
-            "4", "5", "6", "x","cos","n!", "每天推荐里程数",//13
-            "1", "2", "3", "-", "tan","x^2","刷锻步数预算",//20
-            "0", "+/-", ".", "+","ln","lg","="
-            };
+            "sin","cos","tan","x^2",//3
+            "ln","lg","n!","π", //7
+    		"7", "8", "9", "÷", //11
+            "4", "5", "6", "x",//15
+            "1", "2", "3", "-", //19
+            "0", ".", "=","+",//23
+           "剩余体锻数量","每天推荐里程数","刷锻步数预算"//26
+    };
 
-    private final Integer[] COMPLEX = {6, 13, 20};
+    private final Integer[] COMPLEX = {24,25,26};
 
     private boolean isSample;
     //计算器上的功能键的显示名字
@@ -80,11 +86,29 @@ public class Calculator extends JFrame implements ActionListener {
         // 在屏幕(500, 300)坐标处显示计算器
         this.setLocation(500, 300);
         // 不许修改计算器的大小
-        this.setResizable(false);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
+        //用来设置窗口随屏幕大小改变
+        sizeWindowOnScreen(this,0.6,0.6);
+        this.setVisible(true);
+        this.setResizable(true);
         // 使计算器中各组件大小合适
         this.pack();
     }
 
+    /**
+    * 
+    * @param calculator
+    * @param widthRate 宽度比例 
+    * @param heightRate 高度比例
+    */
+    private void sizeWindowOnScreen(Calculator calculator, double widthRate, double heightRate)
+    {
+       Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+      
+       calculator.setSize(new Dimension((int)(screenSize.width * widthRate),(int)(screenSize.height *heightRate)));
+    }
+    
     /**
      * 初始化计算器
      */
@@ -95,22 +119,18 @@ public class Calculator extends JFrame implements ActionListener {
         resultText.setEditable(false);
         // 设置文本框背景颜色为白色
         resultText.setBackground(Color.WHITE);
-
+        // 设置文本框字体和大小
+        resultText.setFont(new Font("宋体",Font.BOLD,30));
         // 初始化计算器上键的按钮，将键放在一个画板内
         JPanel calckeysPanel = new JPanel();
         // 用网格布局器，4行，7列的网格，网格之间的水平方向间隔为3个象素，垂直方向间隔为3个象素
-        calckeysPanel.setLayout(new GridLayout(4, 7, 3, 3));
+        calckeysPanel.setLayout(new GridLayout(7, 4, 3, 3));
         for (int i = 0; i < KEYS.length; i++) {
             keys[i] = new JButton(KEYS[i]);
             calckeysPanel.add(keys[i]);
-            keys[i].setForeground(Color.blue);
+            keys[i].setFont(new java.awt.Font(KEYS[i], 4, 20));
+            keys[i].setForeground(new java.awt.Color(0,139,139));
         }
-        // 运算符键用红色标示，其他键用蓝色表示
-        //keys[3].setForeground(Color.red);
-        //keys[8].setForeground(Color.red);
-        //keys[13].setForeground(Color.red);
-        //keys[18].setForeground(Color.red);
-        //keys[19].setForeground(Color.red);
 
         // 初始化功能键，都用红色标示。将功能键放在一个画板内
         JPanel commandsPanel = new JPanel();
@@ -119,7 +139,8 @@ public class Calculator extends JFrame implements ActionListener {
         for (int i = 0; i < COMMAND.length; i++) {
             commands[i] = new JButton(COMMAND[i]);
             commandsPanel.add(commands[i]);
-            commands[i].setForeground(Color.red);
+            commands[i].setFont(new java.awt.Font(COMMAND[i], 4, 20));
+            commands[i].setForeground(new java.awt.Color(70,130,180));
         }
 
         // 初始化M键，用红色标示，将M键放在一个画板内
@@ -129,9 +150,10 @@ public class Calculator extends JFrame implements ActionListener {
         for (int i = 0; i < M.length; i++) {
             m[i] = new JButton(M[i]);
             calmsPanel.add(m[i]);
-            m[i].setForeground(Color.red);
+            m[i].setFont(new java.awt.Font(M[i], 4, 20));
+            m[i].setForeground(new java.awt.Color(186,85,211));
         }
-
+        m[0].setForeground(Color.red);
         // 初始化公式键，都用红色标示。将功能键放在一个画板内
         JPanel formulaPanel = new JPanel();
         // 用网格布局器，2行，3列的网格，网格之间的水平方向间隔为3个象素，垂直方向间隔为3个象素
@@ -139,6 +161,7 @@ public class Calculator extends JFrame implements ActionListener {
         for (int i = 0; i < FORMULA.length; i++) {
             formula[i] = new JButton(FORMULA[i]);
             formulaPanel.add(formula[i]);
+            formula[i].setFont(new java.awt.Font(FORMULA[i], 4, 20));
             formula[i].setForeground(Color.red);
         }
         
