@@ -364,7 +364,11 @@ public class Calculator extends JFrame implements ActionListener {
             	q = k - 60;
             	double f = 0;
             	f = 60 - q;
-            	if(q >= 0) {
+            	if(getNumberFromText()>100||getNumberFromText()<0) {
+            		operateValidFlag = false;
+            		resultText.setText("输入不合理！体测成绩在0~100分之间！");}
+            	
+            	else if(q >= 0) {
             	resultNum = f;
             	}
             	else {
@@ -375,11 +379,13 @@ public class Calculator extends JFrame implements ActionListener {
         else if (operator.equals("每天推荐里程数")) {
                 // 每天推荐里程数运算
             	
-            	
-            	if(resultNum<60) {    //判断体测成绩是否小于60分
+            	if(resultNum > 100||resultNum <0){    //体测成绩有效性
+            		operateValidFlag = false;
+              		resultText.setText("输入不合理！体测成绩在0~100分之间！");}
+            	else if(resultNum<60) {    //判断体测成绩是否小于60分
             		operateValidFlag = false;
               		resultText.setText("无药可救！");}
-            	else {
+            	else{
             		 double l = 0;
             		 
             	     //体测成绩距离及格线的差距
